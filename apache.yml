@@ -1,0 +1,28 @@
+---
+- name: Apache Web server Config playbook
+  hosts:  node1
+  become: true
+  tasks:
+    - name: Installing apache
+      yum:
+        name: httpd
+        state:  latest
+    - name: Starting and enabling the service
+      service:
+        name: httpd
+        state:  started
+        enabled:  true
+    - name: Setting up
+      template:
+        src:  /home/zohaib/playbooks/index.j2
+        dest: /var/www/html/index.html
+    - name: Allowing the service in the firewall
+      firewalld:
+        service:  http
+        permanent:  yes
+        state:  enabled
+    - name: Reload the firewall service
+      service:
+        name: firewalld
+        state:  reloaded
+...

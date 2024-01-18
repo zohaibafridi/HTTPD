@@ -1,0 +1,15 @@
+---
+- name: Setting up Apache
+  template:
+    src:  /etc/ansible/roles/apache/templates/index.j2
+    dest: /var/www/html/index.html
+- name: Allowing thee http traffic
+  firewalld:
+    service:  http
+    permanent:  yes
+    state:  enabled
+- name: Reload the firewall service
+  service:
+    name: firewalld
+    state:  reloaded
+... 
